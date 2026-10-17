@@ -1,0 +1,26 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: student-complaint-register
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: student-complaint-register
+  template:
+    metadata:
+      labels:
+        app: student-complaint-register
+    spec:
+      containers:
+        - name: complaint-app
+          image: kaustubhrd26/student-complaint-register:v1
+          ports:
+            - containerPort: 5000
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 10
