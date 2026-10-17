@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, redirect
 app = Flask(__name__)
 
 commit = os.getenv("RENDER_GIT_COMMIT", "local")[:7]
-app_version = "DevOps Demo v2"
+
 
 complaints = []
 
