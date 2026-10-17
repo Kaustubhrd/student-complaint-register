@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Complaint Register</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #333;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 40px auto;
+        }
+
+        header {
+            background: #2c3e50;
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: #dfe6e9;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h2 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 6px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        .complaint {
+            border: 1px solid #ddd;
+            border-left: 5px solid #3498db;
+            padding: 18px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            background: #fafafa;
+        }
+
+        .complaint:last-child {
+            margin-bottom: 0;
+        }
+
+        .complaint h3 {
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .complaint p {
+            margin: 6px 0;
+            line-height: 1.5;
+        }
+
+        .status {
+            display: inline-block;
+            background: #f39c12;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        .category {
+            display: inline-block;
+            background: #e8f4fd;
+            color: #2980b9;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 13px;
+        }
+
+        .no-complaints {
+            text-align: center;
+            color: #777;
+            padding: 20px;
+        }
+
+        footer {
+            text-align: center;
+            color: #777;
+            font-size: 14px;
+            margin-top: 25px;
+            padding-bottom: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                width: 95%;
+                margin: 20px auto;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            header {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <header>
+            <h1>Student Complaint Register</h1>
+            <p>Submit and track student complaints easily</p>
+        </header>
+
+        <div class="card">
+            <h2>Submit a Complaint</h2>
+
+            <form action="/add" method="POST">
+
+                <div class="form-group">
+                    <label for="name">Student Name</label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Enter your name"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" name="category" required>
+                        <option value="">Select category</option>
+                        <option value="Academic">Academic</option>
+                        <option value="Infrastructure">Infrastructure</option>
+                        <option value="Faculty">Faculty</option>
+                        <option value="Library">Library</option>
+                        <option value="Hostel">Hostel</option>
+                        <option value="Canteen">Canteen</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="complaint">Complaint</label>
+                    <textarea
+                        id="complaint"
+                        name="complaint"
+                        placeholder="Describe your complaint"
+                        required
+                    ></textarea>
+                </div>
+
+                <button type="submit">Submit Complaint</button>
+
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>Submitted Complaints</h2>
+
+            {% if complaints %}
+
+                {% for complaint in complaints %}
+                    <div class="complaint">
+
+                        <h3>{{ complaint.name }}</h3>
+
+                        <p>
+                            <strong>Category:</strong>
+                            <span class="category">
+                                {{ complaint.category }}
+                            </span>
+                        </p>
+
+                        <p>
+                            <strong>Complaint:</strong>
+                            {{ complaint.complaint }}
+                        </p>
+
+                        <span class="status">
+                            {{ complaint.status }}
+                        </span>
+
+                    </div>
+                {% endfor %}
+
+            {% else %}
+
+                <p class="no-complaints">
+                    No complaints have been submitted yet.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+        <footer>
+            <p>Student Complaint Register &copy; 2026</p>
+
+            {% if RENDER_GIT_COMMIT %}
+                <p>Version: {{ RENDER_GIT_COMMIT }}</p>
+            {% endif %}
+        </footer>
+
+    </div>
+
+</body>
+</html>
